@@ -1,0 +1,36 @@
+{
+  "name": "cogni-blocks",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Coderah/cogni-blocks.git"
+  },
+  "author": "Alex (Coderah) DiBerardino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Coderah/cogni-blocks/issues"
+  },
+  "homepage": "https://github.com/Coderah/cogni-blocks#readme",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.0.17",
+    "@types/lodash": "^4.17.16",
+    "@vitejs/plugin-vue": "^5.2.2",
+    "@vue/tsconfig": "^0.7.0",
+    "lodash": "^4.17.21",
+    "tailwindcss": "^4.0.17",
+    "typescript": "~5.7.2",
+    "uuid": "^11.1.0",
+    "vite": "^6.2.2",
+    "vue-router": "^4.5.0",
+    "vue-tsc": "^2.2.8"
+  },
+  "devDependencies": {
+  }
+}
