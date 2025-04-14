@@ -1,7 +1,7 @@
 import { gridSize } from '../../const';
 import { interval } from '../../sprixle/util/timing';
 import { areShapesOverlapping } from '../collision';
-import { Direction, Shape } from '../components';
+import { Direction, Shape, shapeGrids } from '../components';
 import { em } from '../entityManager';
 import { isControlledQuery, moveSignalQuery, shapeQuery } from '../queries';
 
@@ -32,24 +32,33 @@ export const movementSystem = em.createSystem({
 
         const patch = directionPatches[moveDirection];
 
-        const { position } = controlledEntity.components;
+        const { position, shape } = controlledEntity.components;
+
+        const shapeGrid = shape !== undefined ? shapeGrids[shape] : undefined;
+        const width = shapeGrid ? shapeGrid[0].length : 0;
+        const height = shapeGrid ? shapeGrid.length : 0;
 
         const newPosition = {
-            x: position.x + (patch.x || 0),
-            y: position.y + (patch.y || 0),
+            x: Math.min(
+                Math.max(0, position.x + (patch.x || 0)),
+                gridSize - width
+            ),
+            y: Math.min(
+                Math.max(0, position.y + (patch.y || 0)),
+                gridSize - height
+            ),
         };
 
         let isValidMove = false;
 
-        if (controlledEntity.components.shape !== undefined) {
+        if (shape !== undefined) {
             // check collision if controlled entity is a shape
 
             isValidMove = !shapeQuery.find((otherEntity) => {
                 if (otherEntity === controlledEntity) return false;
 
                 return areShapesOverlapping(
-                    // @ts-expect-error typescript doesn't understand the if condition in the context above this
-                    controlledEntity.components.shape,
+                    shape,
                     newPosition,
                     otherEntity.components.shape,
                     otherEntity.components.position
@@ -65,7 +74,5 @@ export const movementSystem = em.createSystem({
         }
 
         em.deregisterEntity(move);
-
-        gridSize;
     },
 });
