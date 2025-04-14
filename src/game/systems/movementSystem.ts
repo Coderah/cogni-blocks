@@ -1,7 +1,7 @@
 import { gridSize } from '../../const';
 import { interval } from '../../sprixle/util/timing';
 import { areShapesOverlapping } from '../collision';
-import { Direction, Shape, shapeGrids } from '../components';
+import { Direction, shapeGrids } from '../components';
 import { em } from '../entityManager';
 import { isControlledQuery, moveSignalQuery, shapeQuery } from '../queries';
 
@@ -14,19 +14,12 @@ const directionPatches: {
     [Direction.DOWN]: { y: +1 },
 };
 
-export const movementSystem = em.createSystem({
+export const movementSystem = em.createSystem(isControlledQuery, {
     interval: interval(50),
-    tick() {
+    all(controlledEntity) {
         const move = moveSignalQuery.first();
 
         if (!move) return;
-
-        const controlledEntity = isControlledQuery.first();
-        if (!controlledEntity) {
-            throw new Error(
-                'Unable to apply moveSignal because no controlled entity exists.'
-            );
-        }
 
         const { moveDirection } = move.components;
 
@@ -73,6 +66,6 @@ export const movementSystem = em.createSystem({
             controlledEntity.components.position = newPosition;
         }
 
-        em.deregisterEntity(move);
+        move.components.isDead = true;
     },
 });
