@@ -42,11 +42,11 @@ async function main() {
     const ai = new GoogleGenAI(options);
 
     const app = express();
-    app.use(cors({ origin: 'sprixle.studio' }));
+    app.use(cors({ origin: 'https://sprixle.studio' }));
     const server = http.createServer(app);
     const io = new Server(server, {
         cors: {
-            origin: 'sprixle.studio',
+            origin: 'https://sprixle.studio',
         },
     });
 
