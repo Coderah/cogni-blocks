@@ -4,6 +4,18 @@ This project is an interview assignment that uses an LLM (Gemini) and player voi
 
 https://sprixle.studio/cogni-blocks/
 
+See assignment [here](assignment.md).
+
+# Setup
+To run entirely local a Google Cloud API key with access to the gemini api will be required.
+
+install dependencies `npm i`
+
+start the server `GEMINI_API_KEY={KEY} npm run api`
+start vite dev server `npm run dev`
+
+I'd recommend just using the production build (linked above), you could also contact me for a key if you want to run locally.
+
 # Core Game Logic
 
 I often use projects like this, where there's no production environment at the end, as an opportunity to develop something more broadly useful. In this case, I created a Vue plugin for my game engine.
