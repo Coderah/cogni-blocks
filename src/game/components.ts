@@ -46,4 +46,7 @@ export type ComponentTypes = {
 
     isMoveSignal: true;
     moveDirection: Direction;
+
+    /** indicates an entity should be removed at the end of the next tick */
+    isDead: true;
 } & defaultComponentTypes;

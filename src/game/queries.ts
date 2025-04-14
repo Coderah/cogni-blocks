@@ -12,3 +12,7 @@ export const moveSignalQuery = em.createQuery({
 export const isControlledQuery = em.createQuery({
     includes: ['isControlled', 'position'],
 });
+
+export const isDeadQuery = em.createQuery({
+    includes: ['isDead'],
+});
