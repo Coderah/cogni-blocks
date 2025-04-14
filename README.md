@@ -16,6 +16,8 @@ start vite dev server `npm run dev`
 
 I'd recommend just using the production build (linked above), you could also contact me for a key if you want to run locally.
 
+The grid size is configurable in `src/const.ts` it is always a 1:1 grid.
+
 # Core Game Logic
 
 I often use projects like this, where there's no production environment at the end, as an opportunity to develop something more broadly useful. In this case, I created a Vue plugin for my game engine.
