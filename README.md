@@ -2,6 +2,8 @@
 
 This project is an interview assignment that uses an LLM (Gemini) and player voice input to control a simple grid-based game.
 
+https://sprixle.studio/cogni-blocks/
+
 # Core Game Logic
 
 I often use projects like this, where there's no production environment at the end, as an opportunity to develop something more broadly useful. In this case, I created a Vue plugin for my game engine.
