@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ComputedRef } from 'vue';
+import { ShallowRef } from 'vue';
 import { Shape, shapeGrids } from '../game/components';
 import { shapeQuery } from '../game/queries';
 
 const { entity } = defineProps<{
-    entity: ComputedRef<typeof shapeQuery.Entity>;
+    entity: ShallowRef<typeof shapeQuery.Entity>;
 }>();
 </script>
 

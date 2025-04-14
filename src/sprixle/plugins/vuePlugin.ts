@@ -1,5 +1,7 @@
 /** @reflection never */
-import { computed, ref, ShallowRef, shallowRef } from 'vue';
+import { triggerRef } from '@vue/reactivity';
+import { ShallowRef, shallowRef } from 'vue';
+import { em } from '../../game/entityManager';
 import {
     defaultComponentTypes,
     EntityWithComponents,
@@ -8,8 +10,6 @@ import {
 } from '../ecs/manager';
 import { Query } from '../ecs/query';
 import { Pipeline } from '../ecs/system';
-import { em } from '../../game/entityManager';
-import { ShallowRefMarker, triggerRef } from '@vue/reactivity';
 
 export function applyVuePlugin<
     C extends defaultComponentTypes,
