@@ -153,7 +153,6 @@ async function recordAudio() {
 
                 if (arrayBuffer) {
                     const arrayBufferString = arrayBufferToBase64(arrayBuffer);
-                    console.log('send audio');
                     socket.emit('realtimeInput', arrayBufferString);
                 }
             };
@@ -167,3 +166,11 @@ async function recordAudio() {
         {{ isRecording ? 'Stop Realtime' : 'Start Realtime' }}
     </button>
 </template>
+
+<style scoped>
+button {
+    position: absolute;
+    z-index: 50;
+    font-size: 28px;
+}
+</style>
