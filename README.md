@@ -33,3 +33,12 @@ I chose Gemini because I was already somewhat familiar with its API. I felt that
 The LLM prompting is the only aspect I'm not fully satisfied with; the LLM's performance sometimes varies. I would likely investigate this further, it might have more to do with the live voice detection piece of it.
 
 I believe there's significant potential to dynamically prompt the LLM based on proximity to other shapes. For example, if the LLM knows where the wall is, the player could say, "move up until the wall doesn't collide with the wall". As game complexity increases, manipulating the LLM and player's understanding of the game world could lead to unique mechanics.
+
+
+# Coding Approach
+
+I utilized LLM coding where it made sense to (collision code, configuration steps for cloud stuff, boilerplate, larger but simple refactors). Though for the meat of things I move much faster without. Google was opened maybe twice for extra weird build issues that LLMs were no help on.
+
+My goal is readable and clear code that's easy to test by actually using it.
+
+If I felt documentation was necessary I do it directly in the code.
