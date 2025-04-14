@@ -1,5 +1,5 @@
 /** @reflection never */
-import { computed, ref } from 'vue';
+import { computed, ref, ShallowRef, shallowRef } from 'vue';
 import {
     defaultComponentTypes,
     EntityWithComponents,
@@ -8,6 +8,8 @@ import {
 } from '../ecs/manager';
 import { Query } from '../ecs/query';
 import { Pipeline } from '../ecs/system';
+import { em } from '../../game/entityManager';
+import { ShallowRefMarker, triggerRef } from '@vue/reactivity';
 
 export function applyVuePlugin<
     C extends defaultComponentTypes,
@@ -23,46 +25,37 @@ export function applyVuePlugin<
         IndexedComponent extends Keys<C>,
         E extends EntityWithComponents<C, M, Includes[number]>
     >(query: Query<C, Includes, M, IndexedComponent, E>) {
-        /** bit gets flipped to communicate computed value has changed to vue */
-        const updateTrigger = ref(false);
+        const cache: {
+            [id: string]: ShallowRef<typeof manager.Entity>;
+        } = {};
+
+        const ref = shallowRef(query.entities.map((id) => getEntityRef<E>(id)));
+
+        function getEntityRef<E = typeof manager.Entity>(id: string) {
+            return (cache[id] =
+                cache[id] || shallowRef(em.getEntity(id))) as ShallowRef<E>;
+        }
 
         // Consumer and System work to communicate updates.
         const consumer = query.createConsumer();
         const system = manager.createSystem(consumer, {
             tick() {
                 if (
-                    consumer.updatedEntities.size ||
                     consumer.newEntities.size ||
                     consumer.deletedEntities.size
                 ) {
-                    updateTrigger.value = !updateTrigger.value;
-
-                    consumer.clear();
+                    ref.value = query.entities.map((id) => getEntityRef<E>(id));
                 }
+            },
+
+            newOrUpdated(entity) {
+                triggerRef(getEntityRef(entity.id));
             },
         });
 
         vuePipeline.systems.add(system);
 
-        return computed(
-            () => {
-                updateTrigger.value;
-                console.log('[useQuery update]', query);
-                return query.entities.map((id) =>
-                    computed(() => manager.getEntity(id) as E)
-                );
-            },
-            {
-                onTrack(e) {
-                    // triggered when count.value is tracked as a dependency
-                    console.log('[useQuery] track', query);
-                },
-                onTrigger(e) {
-                    // triggered when count.value is mutated
-                    console.log('[useQuery] trigger', query);
-                },
-            }
-        );
+        return ref;
     }
 
     return {
