@@ -12,6 +12,8 @@ This approach enforces a separation between data-driven logic and rendering. If 
 
 Positioning within the game's data uses simple grid cell values. The size of each grid block is determined by the rendering, which simplifies collision and movement calculations.
 
+Moves are made utilizing a queue of `isMoveSignal` entities. Every voice response creates a new one. the movement system pulls the oldest off the stack every 50 ms.
+
 # Rendering
 
 HTML and CSS are used for all rendering. I use a background gradient technique to render the background grid. This gradient is composited by modern browsers and, because it's static, renders very efficiently.
@@ -42,3 +44,8 @@ I utilized LLM coding where it made sense to (collision code, configuration step
 My goal is readable and clear code that's easy to test by actually using it.
 
 If I felt documentation was necessary I do it directly in the code.
+
+# Issues / Concerns
+
+* When the AI session ends/times out you have to refresh.
+* Ideally there'd be better UI feedback for the voice input. I imagined several niceties here but decided not to push beyond 5 hours of work.
