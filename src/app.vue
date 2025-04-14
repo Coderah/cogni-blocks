@@ -2,6 +2,9 @@
 import { ref } from 'vue';
 import { io } from 'socket.io-client';
 import BackgroundGrid from './components/backgroundGrid.vue';
+import AllShapes from './components/allShapes.vue';
+import { em } from './game/entityManager';
+import { Direction } from './game/components';
 
 const socket = io('ws://localhost:8000');
 socket.connect();
@@ -11,7 +14,19 @@ socket.on('connect', () => {
 });
 
 socket.on('response', (response) => {
-    console.log(response);
+    const moves = response.split(',');
+
+    for (let move of moves) {
+        if (move in Direction) {
+            console.log(
+                move,
+                em.quickEntity({
+                    isMoveSignal: true,
+                    moveDirection: move,
+                })
+            );
+        }
+    }
 });
 
 const isRecording = ref(false);
@@ -138,6 +153,7 @@ async function recordAudio() {
 
                 if (arrayBuffer) {
                     const arrayBufferString = arrayBufferToBase64(arrayBuffer);
+                    console.log('send audio');
                     socket.emit('realtimeInput', arrayBufferString);
                 }
             };
@@ -150,4 +166,19 @@ async function recordAudio() {
     <button @click="toggleRecording">
         {{ isRecording ? 'Stop Realtime' : 'Start Realtime' }}
     </button>
+
+    <div class="game-wrapper">
+        <BackgroundGrid />
+        <AllShapes />
+    </div>
 </template>
+
+<style scoped>
+.game-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translateX(-50%) translateY(-50%);
+}
+</style>
