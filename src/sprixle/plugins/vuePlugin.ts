@@ -1,7 +1,6 @@
 /** @reflection never */
 import { triggerRef } from '@vue/reactivity';
 import { ShallowRef, shallowRef } from 'vue';
-import { em } from '../../game/entityManager';
 import {
     defaultComponentTypes,
     EntityWithComponents,
@@ -17,7 +16,25 @@ export function applyVuePlugin<
 >(manager: M) {
     const vuePipeline = new Pipeline(manager);
 
-    // TODO introduce useEntity(id) and useSingletonEntity(componentName)
+    // TODO introduce useEntity(id)
+    function useSingletonEntityComponent<K extends Keys<C>>(component: K) {
+        const ref = shallowRef<C[K] | undefined>(
+            manager.getSingletonEntityComponent(component)
+        );
+        const query = manager.createQuery({
+            includes: [component],
+        });
+
+        vuePipeline.systems.add(
+            manager.createSystem(query.createConsumer(), {
+                newOrUpdated(entity) {
+                    ref.value = entity.components[component];
+                },
+            })
+        );
+
+        return ref;
+    }
     // TODO introduce more granular useQuery (update per entity, etc)
     // TODO investigate if a v-for on a useQuery is possible
     function useQuery<
@@ -33,7 +50,8 @@ export function applyVuePlugin<
 
         function getEntityRef<E = typeof manager.Entity>(id: string) {
             return (cache[id] =
-                cache[id] || shallowRef(em.getEntity(id))) as ShallowRef<E>;
+                cache[id] ||
+                shallowRef(manager.getEntity(id))) as ShallowRef<E>;
         }
 
         // Consumer and System work to communicate updates.
@@ -60,6 +78,7 @@ export function applyVuePlugin<
 
     return {
         vuePipeline,
+        useSingletonEntityComponent,
         useQuery,
     };
 }
