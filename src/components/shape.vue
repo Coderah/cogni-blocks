@@ -47,6 +47,8 @@ const { entity } = defineProps<{
     top: 0;
     transform: translateX(calc(var(--x) * var(--slot-size)))
         translateY(calc(var(--y) * var(--slot-size)));
+
+    transition: 0.25s linear transform;
 }
 
 .grid-row {
