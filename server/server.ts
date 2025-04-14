@@ -42,11 +42,11 @@ async function main() {
     const ai = new GoogleGenAI(options);
 
     const app = express();
-    app.use(cors({ origin: '*' }));
+    app.use(cors({ origin: 'sprixle.studio' }));
     const server = http.createServer(app);
     const io = new Server(server, {
         cors: {
-            origin: '*',
+            origin: 'sprixle.studio',
         },
     });
 
@@ -105,9 +105,8 @@ async function main() {
         });
     });
 
-    const port = 8000;
-    server.listen(port, async () => {
-        console.log(`Server running on port ${port}`);
+    server.listen(config.PORT, async () => {
+        console.log(`Server running on port ${config.PORT}`);
     });
 }
 

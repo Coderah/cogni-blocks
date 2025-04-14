@@ -4,7 +4,9 @@ import { io } from 'socket.io-client';
 import { em } from '../game/entityManager';
 import { Direction } from '../game/components';
 
-const socket = io('ws://localhost:8000');
+const socket = io(
+    import.meta.env.PROD ? 'wss://cogni.sprixle.studio/' : 'ws://localhost:8000'
+);
 socket.connect();
 
 socket.on('connect', () => {
