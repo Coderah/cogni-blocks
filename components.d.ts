@@ -10,6 +10,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AllShapes: typeof import('./src/components/allShapes.vue')['default']
     BackgroundGrid: typeof import('./src/components/backgroundGrid.vue')['default']
+    RealtimeAudioInput: typeof import('./src/components/realtimeAudioInput.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Shape: typeof import('./src/components/shape.vue')['default']
